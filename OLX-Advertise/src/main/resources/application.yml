@@ -1,0 +1,70 @@
+server:
+  port: 9002
+  
+spring:
+  application:
+    name: advertise-service
+  datasource:
+    url: jdbc:mysql://localhost:3306/olx-advertise
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: Aasif
+    password: #Aa@320931
+  jpa:
+    hibernate.ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+  zipkin:
+    base-url: http://localhost:9411
+          
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  health:
+    circuitbreakers:
+      enabled: true
+  endpoint:
+    health:
+      show-details: always
+      
+resilience4j:
+  circuitbreaker:
+    instances:
+      CATEGORY-CIRCUIT-BREAKER:
+        registerHealthIndicator: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        
+      USER-DETAILS-CIRCUIT-BREAKER:
+        registerHealthIndicator: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        
+      CATEGORY-DETAILS-CIRCUIT-BREAKER:
+        registerHealthIndicator: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s    
+        
+      STATUS-DETAILS-CIRCUIT-BREAKER:
+        registerHealthIndicator: true
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s      
+        
+eureka:
+  client:
+    register-with-eureka: true
+    fetch-registry: true
